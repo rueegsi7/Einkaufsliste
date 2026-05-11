@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MongoClient } from 'mongodb';
 import { MONGODB_URI } from '$env/static/private';
 

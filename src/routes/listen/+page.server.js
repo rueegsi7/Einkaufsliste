@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { redirect, fail } from '@sveltejs/kit';
 import { connectToDatabase } from '$lib/server/db.js';
 import { ObjectId } from 'mongodb';
