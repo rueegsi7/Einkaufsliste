@@ -5,11 +5,7 @@ if (!MONGODB_URI) {
 	throw new Error('MONGODB_URI env variable is required');
 }
 
-const client = new MongoClient(MONGODB_URI, {
-	tls: true,
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
+const client = new MongoClient(MONGODB_URI);
 
 let cachedClient = globalThis.__mongoClient;
 let cachedDb = globalThis.__mongoDb;

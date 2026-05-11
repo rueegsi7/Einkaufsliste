@@ -1,15 +1,26 @@
+<script>
+	import { enhance } from '$app/forms';
+
+	let loginMessage = '';
+	let registerMessage = '';
+</script>
+
 <div class="page-shell">
 	<section class="card">
 		<h1>Login</h1>
-		<form>
+		<form method="POST" action="?/login" use:enhance>
+			{#if loginMessage}
+				<div class="message error">{loginMessage}</div>
+			{/if}
+
 			<label>
 				<span>E-Mail</span>
-				<input type="email" placeholder="name@example.com" />
+				<input type="email" name="email" placeholder="name@example.com" required />
 			</label>
 
 			<label>
 				<span>Passwort</span>
-				<input type="password" placeholder="••••••••" />
+				<input type="password" name="password" placeholder="••••••••" required />
 			</label>
 
 			<button type="submit">Anmelden</button>
@@ -18,25 +29,29 @@
 
 	<section class="card">
 		<h1>Registrieren</h1>
-		<form>
+		<form method="POST" action="?/register" use:enhance>
+			{#if registerMessage}
+				<div class="message">{registerMessage}</div>
+			{/if}
+
 			<label>
 				<span>Vorname</span>
-				<input type="text" placeholder="Max" />
+				<input type="text" name="firstName" placeholder="Max" required />
 			</label>
 
 			<label>
 				<span>Nachname</span>
-				<input type="text" placeholder="Mustermann" />
+				<input type="text" name="lastName" placeholder="Mustermann" required />
 			</label>
 
 			<label>
 				<span>E-Mail</span>
-				<input type="email" placeholder="name@example.com" />
+				<input type="email" name="email" placeholder="name@example.com" required />
 			</label>
 
 			<label>
 				<span>Passwort</span>
-				<input type="password" placeholder="••••••••" />
+				<input type="password" name="password" placeholder="••••••••" required />
 			</label>
 
 			<button type="submit">Registrieren</button>
@@ -94,5 +109,20 @@
 		font-size: 1rem;
 		font-weight: 600;
 		cursor: pointer;
+	}
+
+	.message {
+		padding: 0.8rem 1rem;
+		border-radius: 8px;
+		font-size: 0.95rem;
+		background: #e8f5e9;
+		color: #2e7d32;
+		border: 1px solid #4caf50;
+	}
+
+	.message.error {
+		background: #ffebee;
+		color: #c62828;
+		border-color: #f44336;
 	}
 </style>
