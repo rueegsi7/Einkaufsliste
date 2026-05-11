@@ -71,7 +71,7 @@
 ## 5. Projektorganisation [Optional]
 * **Repository & Struktur:** Verwaltung über Git; Trennung von Frontend-Logik (`+page.svelte`) und Server-Logik (`+page.server.js`).
 * **Issue-Management:** Tasks wurden iterativ abgearbeitet.
-* **Commit-Praxis:** Regelmässige Commits mit Titeln wie `feat: auth implementation` oder `feat: mongodb connection`.
+* **Commit-Praxis:** Regelmässige Commits, mindestens nach jeder neu implementierten Funktion. Wenn etwas mit KI generiert wurde erhält die commit message "agent:" als präfix. Sonst wird unterschieden zwischen "doc:", "feat:" und "chore:".
 
 ## 6. KI-Deklaration
 
