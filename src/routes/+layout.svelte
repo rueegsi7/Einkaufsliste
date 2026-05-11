@@ -1,11 +1,33 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
-
-	let { children } = $props();
+	import { page } from '$app/stores';
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<nav>
+	<a href="/" class="brand">LiveSync</a>
+	<a href="/listen" class="nav-link">Listen</a>
+</nav>
 
-{@render children()}
+<main>
+	<slot />
+</main>
+
+<style>
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.brand,
+	.nav-link {
+		text-decoration: none;
+		color: inherit;
+		font-weight: 600;
+	}
+
+	main {
+		padding: 1rem;
+	}
+</style>
