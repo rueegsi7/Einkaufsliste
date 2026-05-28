@@ -57,10 +57,41 @@
 * **Besondere Entscheidungen:** Verwendung von `bcrypt` für Password-Hashing und HTTP-only Cookies für das Session-Management.
 
 ### 3.5 Validate
-* **URL der getesteten Version:** Aktuell lokal gehostet (localhost:5173).
-* **Ziele der Prüfung:** Verstehen Nutzer den Einkaufsmodus? Ist das Hinzufügen intuitiv?
-* **Vorgehen:** Funktionaler Test der Kern-Features (Registrierung, Login, CRUD-Operationen).
-* **Resultate:** Der Mindestumfang (Datenpersistenz und Authentifizierung) ist stabil implementiert.
+
+#### 3.5.1 Meta-Informationen & Methodik
+* **URL der getesteten Version:** Aktuell lokal gehostet (localhost:5173) sowie als Prototyp unter [Netlify Link](https://6a01d603edc8da221236cd7a--livesynceinkaufsliste.netlify.app/).
+* **Ziele der Prüfung:** Verstehen Nutzer den Einkaufsmodus? Ist das Hinzufügen intuitiv? Evaluation der Kernfunktionen, Navigation und Alltagstauglichkeit.
+* **Test-Setup:** Durchgeführt am 20.05.2026 (Moderator: Silvan Rüegg). Getestet auf PC/Notebook/Smartphone mittels digital präsentierten Touchgesten.
+* **Aufgaben:** 
+1. Registrieren mit E-Mail-Adresse.
+  2. Neue Einkaufsliste erstellen.
+  3. Produkt erfassen und als "Eingekauft" markieren.
+
+#### 3.5.2 Wichtigste Erkenntnisse & Next Steps
+Der Mindestumfang (Datenpersistenz und Authentifizierung) ist stabil implementiert. Aus den Usability-Tests ergaben sich jedoch folgende primäre Usability-Probleme und Feature-Wünsche:
+
+1. **Top 3 Usability-Probleme:**
+   * **Registrierungsprozess fehlerhaft/unklar:** Es fehlt eine Systemmeldung, dass eine E-Mail verschickt wird. Bestätigungs-E-Mails kommen teilweise nicht an, und fehlerhafte Eingaben erzeugen keine Warnung.
+   * **Unklarheiten beim Abhaken/Einkaufswagen:** Das Konzept des Status (eingekauft oder nicht) ist verwirrend. Man sieht nicht klar, was bereits gekauft wurde.
+   * **Auffindbarkeit der Registrierung:** Der Startpunkt für neue Nutzer ist nicht intuitiv platziert.
+2. **Next Steps:**
+   * Benachrichtigungen/Feedback-Meldungen beim Login/Registrierung hinzufügen (z.B. "E-Mail wurde versandt").
+   * Visuelle Überarbeitung der "Abhaken"-Funktion / des Einkaufswagen-Icons für mehr Klarheit.
+   * Fehlende Wunsch-Features prüfen: Mengenangaben, vorgegebene Läden, Verlauf.
+
+#### 3.5.3 Issue Map: livesync Einkaufsliste
+
+| **ID** | **Bereich** | **Problembeschreibung** | **Schweregrad** | **Lösungsansatz / Next Step** |
+| :--- | :--- | :--- | :--- | :--- |
+| **01** | Registrierung | **Technischer Fehler:** Es wird keine Bestätigungs-E-Mail verschickt. Anmeldung schlägt fehl. | Kritisch | Backend-Logik für den E-Mail-Versand prüfen und fixen. |
+| **02** | Registrierung | **Fehlendes Feedback:** Es erscheint keine Systemmeldung, dass der Nutzer sein Postfach prüfen soll. | Hoch | Eindeutige Success-Message nach Klick auf "Registrieren" einbauen. |
+| **03** | Registrierung | **Unklarer Einstieg:** Die Funktion, um sich neu zu registrieren, wird nicht sofort gefunden. | Mittel | Platzierung und visuelle Gewichtung des Links überarbeiten. |
+| **04** | Registrierung | **Fehlende Validierung:** Eine falsch formatierte E-Mail-Adresse löst keine Warnung aus. | Mittel | Live-Validierung des Eingabefelds hinzufügen. |
+| **05** | Einkaufsliste | **Konzeptionelle Unklarheit:** Das Konzept des "Abhakens" (Einkaufswagen-Icon) wird nicht verstanden. | Hoch | Visuelles Feedback anpassen (z.B. durchstreichen, ausgrauen oder separater Bereich). |
+| **06** | Übersicht | **Fehlende Informationen:** In der allgemeinen Listenübersicht werden die Artikel nicht angezeigt. | Mittel | Preview-Funktion auf der Übersichtskarte einbauen. |
+| **07** | Feature | **Mengen & Links:** Es fehlen Möglichkeiten, genaue Mengen anzugeben oder Links für Onlinekäufe zu hinterlegen. | Niedrig | Datenmodell für Artikel erweitern. |
+| **08** | Feature | **Läden vorgeben:** Nutzer wünschen sich eine Möglichkeit, Artikel bestimmten Läden zuzuordnen. | Niedrig | Kategorie- oder Tagging-System implementieren. |
+| **09** | Feature | **Einkaufsverlauf:** Es gibt keine Historie über vergangene Einkäufe. | Niedrig | Eigenen Reiter "Verlauf" oder "Kürzlich gekauft" einführen. |
 
 ## 4. Erweiterungen [Optional]
 * **Beschreibung & Nutzen:** * **Live-Synchronisation:** Implementierung von Client-Side Polling (alle 3-5 Sek.), um Änderungen anderer Nutzer ohne Seiten-Refresh anzuzeigen.
@@ -91,3 +122,49 @@
 ## 7. Anhang [Optional]
 * **Figma Mockup:** [Link zum Design](https://www.figma.com/proto/mgERLZFsczjxcvl9ILYW1d/Untitled?node-id=1-12&t=tyHOn0BkDuBRyG8X-1)
 * **Technischer Hinweis:** Erfordert eine `.env`-Datei mit `MONGODB_URI` für den lokalen Betrieb.
+
+### 7.1 Usability-Testprotokolle im Detail
+
+#### Testprotokoll 1
+
+**Beobachtungs- & Protokollmatrix:**
+| **Aufgabe / Szenario** | **Erfolgreich?** | **Beobachtete Probleme / Stolpersteine / Zitate** |
+| :--- | :--- | :--- |
+| **Aufgabe 1:** Registrierung | Nein (Nur mit Hilfe) | E-Mail falsch eingegeben (keine Warnung). Merkt selbst, dass er Mails kontrollieren muss, aber es gab keine Benachrichtigung in der App. Kein Mail erhalten. Versucht Login trotzdem. Anmeldung schlägt fehl. |
+| **Aufgabe 2:** Liste erstellen | Ja | Funktioniert ohne Probleme. |
+| **Aufgabe 3:** Produkt erfassen / abhaken | Ja | Funktioniert ohne Probleme. *Anmerkung der Testperson:* "Ich sehe, was im Warenkorb ist, aber nicht, was gekauft wurde." |
+
+**Qualitative Nachbefragung:**
+1. **Gesamteindruck:** Die Registrierung klappt noch nicht so gut (hat kein Mail erhalten). Die Idee, Läden vorzugeben, fände er gut.
+2. **Verständnis:** Der "Einkaufswagen" ist verwirrend im Hinblick darauf, ob etwas eingekauft ist oder nicht.
+3. **Erwartungskonformität:** Ja, das System verhält sich größtenteils wie erwartet (man kann eine Liste abhaken).
+4. **Fehlende Funktionen:** Vorgegebene Läden. Artikel werden in der Übersicht nicht angezeigt.
+
+**Quantitative Bewertung (Skala 1 - 5):**
+*(1 = Trifft überhaupt nicht zu / 5 = Trifft vollkommen zu)*
+* Das System war einfach zu bedienen: **[ 3 ]**
+* Ich habe mich im Prototyp jederzeit gut zurechtgefunden (Orientierung): **[ 2 ]**
+* Ich würde diese Anwendung im Alltag nutzen, wenn sie vollständig entwickelt ist: **[ 4 ]**
+
+---
+
+#### Testprotokoll 2
+
+**Beobachtungs- & Protokollmatrix:**
+| **Aufgabe / Szenario** | **Erfolgreich?** | **Beobachtete Probleme / Stolpersteine / Zitate** |
+| :--- | :--- | :--- |
+| **Aufgabe 1:** Registrierung | Nein (Nur mit Hilfe) | Registrierung zuerst nicht gefunden. Nur mit Hilfe herausgefunden, dass eine E-Mail zur Bestätigung kommen soll. Das Mail kommt letztendlich nicht an. |
+| **Aufgabe 2:** Liste erstellen | Ja | Neue Liste ohne Probleme erstellt. |
+| **Aufgabe 3:** Produkt erfassen / abhaken | Ja | Ohne Probleme gelöst. |
+
+**Qualitative Nachbefragung:**
+1. **Gesamteindruck:** Generell gut. Die Einkaufsliste und die Übersicht sind gut. Bei der Registrierung fehlt jedoch zwingend die Meldung, dass eine E-Mail verschickt wird.
+2. **Verständnis:** Das Abhaken auf der Einkaufsliste ist unklar.
+3. **Erwartungskonformität:** Die Erwartungen wurden bei der Registrierung nicht erfüllt, da diese nicht funktioniert hat.
+4. **Fehlende Funktionen:** Mengenangaben (evtl. mit Link für Onlinekäufe) und ein Verlauf der Einkäufe (mit Funktion für erneut zur Liste hinzufügen).
+
+**Quantitative Bewertung (Skala 1 - 5):**
+*(1 = Trifft überhaupt nicht zu / 5 = Trifft vollkommen zu)*
+* Das System war einfach zu bedienen: **[ 5 ]**
+* Ich habe mich im Prototyp jederzeit gut zurechtgefunden (Orientierung): **[ 5 ]**
+* Ich würde diese Anwendung im Alltag nutzen, wenn sie vollständig entwickelt ist: **[ 5 ]**
