@@ -17,6 +17,10 @@
 <div class="page-shell">
 	<h1>{data.listTitle}</h1>
 
+	{#if data.isShopping}
+		<div class="shopping-status">{data.shoppingBy} kauft gerade ein...</div>
+	{/if}
+
 	<section class="create-section">
 		<h2>Artikel hinzufügen</h2>
 		<form method="POST" action="?/addItem">
@@ -128,5 +132,10 @@
 	}
 	.item-name {
 		font-weight: 600;
+	}
+	.shopping-status {
+		font-size: 0.9rem;
+		color: var(--primary);
+		margin-top: 0.25rem;
 	}
 </style>

@@ -26,6 +26,7 @@ export async function load({ params, cookies }) {
 	try {
 		const { db } = await connectToDatabase();
 		const listsCollection = db.collection('lists');
+		const usersCollection = db.collection('users');
 		const itemsCollection = db.collection('items');
 
 		const list = await listsCollection.findOne({ _id: listObjectId, members: userId });
@@ -38,6 +39,16 @@ export async function load({ params, cookies }) {
 			.sort({ createdAt: -1 })
 			.toArray();
 
+		let shoppingBy = null;
+		let isShopping = false;
+		if (list.shoppingStatus?.userId) {
+			const shoppingUser = await usersCollection.findOne({ _id: new ObjectId(list.shoppingStatus.userId) });
+			if (shoppingUser) {
+				shoppingBy = `${shoppingUser.firstName} ${shoppingUser.lastName}`;
+			}
+			isShopping = true;
+		}
+
 		return {
 			listTitle: list.title,
 			listId: list._id.toString(),
@@ -46,7 +57,9 @@ export async function load({ params, cookies }) {
 				name: item.name,
 				shop: item.shop,
 				isBought: Boolean(item.isBought)
-			}))
+			})),
+			shoppingBy,
+			isShopping
 		};
 	} catch (error) {
 		console.error('Load list detail error:', error);
