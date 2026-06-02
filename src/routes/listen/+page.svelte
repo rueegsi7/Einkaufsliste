@@ -19,6 +19,7 @@
 				<li class="list-item">
 					<a href="/listen/{list._id}" class="list-link">
 						<div class="list-name">{list.title}</div>
+						<div class="list-meta">{list.itemCount} offene Artikel</div>
 						{#if list.isShopping}
 							<div class="shopping-status">{list.shoppingBy} kauft gerade ein...</div>
 						{/if}

@@ -13,6 +13,7 @@ export async function load({ cookies }) {
 		const { db } = await connectToDatabase();
 		const listsCollection = db.collection('lists');
 		const usersCollection = db.collection('users');
+		const itemsCollection = db.collection('items');
 		const userId = new ObjectId(sessionCookie);
 
 		const lists = await listsCollection.find({ members: userId }).toArray();
@@ -23,6 +24,11 @@ export async function load({ cookies }) {
 					.find({ _id: { $in: list.members } })
 					.project({ firstName: 1, lastName: 1 })
 					.toArray();
+
+				const unboughtItemCount = await itemsCollection.countDocuments({
+					listId: list._id,
+					isBought: false
+				});
 
 				let shoppingBy = null;
 				if (list.shoppingStatus?.userId) {
@@ -37,6 +43,7 @@ export async function load({ cookies }) {
 				return {
 					_id: list._id.toString(),
 					title: list.title,
+					itemCount: unboughtItemCount,
 					members: members.map((m) => ({
 						id: m._id.toString(),
 						initials: `${m.firstName?.charAt(0) ?? ''}${m.lastName?.charAt(0) ?? ''}`.toUpperCase()
