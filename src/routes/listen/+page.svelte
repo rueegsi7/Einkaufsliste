@@ -1,9 +1,21 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
 
 	let { data } = $props();
 	let renameListId = $state(null);
 	let inviteListId = $state(null);
+
+	onMount(() => {
+		const interval = setInterval(() => {
+			invalidateAll();
+		}, 2000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	});
 </script>
 
 <div class="page-shell">
@@ -48,6 +60,62 @@
 	{#if data.lists.length === 0}
 		<div class="empty-state">
 			<p>Du hast noch keine Listen erstellt.</p>
+		</div>
+	{/if}
+
+	{#if renameListId}
+		<div
+			class="modal-backdrop"
+			onclick={() => (renameListId = null)}
+			onkeydown={(e) => e.key === 'Escape' && (renameListId = null)}
+			role="button"
+			tabindex="0"
+		>
+			<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+				<h2>Liste umbenennen</h2>
+				<form
+					action="?/renameList"
+					method="POST"
+					use:enhance={() => {
+						renameListId = null;
+						return async ({ update }) => {
+							await update();
+						};
+					}}
+				>
+					<input type="hidden" name="listId" value={renameListId} />
+					<input type="text" name="title" placeholder="Neuer Name" required />
+					<button type="submit">Speichern</button>
+				</form>
+			</div>
+		</div>
+	{/if}
+
+	{#if inviteListId}
+		<div
+			class="modal-backdrop"
+			onclick={() => (inviteListId = null)}
+			onkeydown={(e) => e.key === 'Escape' && (inviteListId = null)}
+			role="button"
+			tabindex="0"
+		>
+			<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+				<h2>Nutzer einladen</h2>
+				<form
+					action="?/inviteUser"
+					method="POST"
+					use:enhance={() => {
+						inviteListId = null;
+						return async ({ update }) => {
+							await update();
+						};
+					}}
+				>
+					<input type="hidden" name="listId" value={inviteListId} />
+					<input type="email" name="email" placeholder="E-Mail des Nutzers" required />
+					<button type="submit">Einladen</button>
+				</form>
+			</div>
 		</div>
 	{/if}
 </div>

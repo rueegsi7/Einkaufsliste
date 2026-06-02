@@ -1,5 +1,8 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+
 	let { data } = $props();
 
 	let toBuy = $state([...data.items]);
@@ -14,6 +17,27 @@
 		toBuy.push(item);
 		inCart.splice(index, 1);
 	}
+
+	onMount(() => {
+		const interval = setInterval(() => {
+			invalidateAll();
+		}, 2000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	});
+
+	$effect(() => {
+		// This effect runs whenever data.items changes
+		const newItems = data.items.filter(
+			(item) =>
+				!toBuy.find((i) => i.id === item.id) && !inCart.find((i) => i.id === item.id)
+		);
+		if (newItems.length > 0) {
+			toBuy.push(...newItems);
+		}
+	});
 </script>
 
 <div class="page-shell">
