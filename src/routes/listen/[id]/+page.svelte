@@ -68,109 +68,65 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		padding: 1rem;
 	}
-
-	h1 {
-		font-size: 1.5rem;
-		margin: 0;
-	}
-
 	.create-section {
-		padding: 1rem;
-		border: 1px solid #ddd;
+		padding: 1.5rem;
+		border: 1px solid var(--border);
 		border-radius: 12px;
-		background: #fff;
+		background: var(--card-bg);
 	}
-
 	.items-section {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 	}
-
-	h2 {
-		font-size: 1.1rem;
-		margin: 0;
+	.shop-group {
+		padding: 1rem;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		background: var(--card-bg);
 	}
-
 	h3 {
-		font-size: 1rem;
-		margin: 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 0.5rem;
+		margin-bottom: 1rem;
 	}
-
 	.start-shopping {
-		font-size: 0.8rem;
-		padding: 0.3rem 0.6rem;
-		border-radius: 6px;
-		background: #eee;
+		font-size: 0.9rem;
+		padding: 0.4rem 0.8rem;
+		border-radius: 8px;
+		background: var(--primary);
 		text-decoration: none;
-		color: #333;
+		color: var(--bg);
+		border: none;
+		cursor: pointer;
 	}
-
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		font-size: 0.95rem;
-	}
-
-	input[type='text'] {
+	input {
 		padding: 0.9rem 1rem;
-		border: 1px solid #ccc;
+		border: 1px solid var(--border);
 		border-radius: 10px;
 		font-size: 1rem;
+		background-color: var(--bg);
+		color: var(--text);
 	}
-
-	button {
-		padding: 0.85rem 1rem;
+	button[type='submit'] {
+		padding: 0.95rem 1rem;
 		border: none;
 		border-radius: 10px;
-		background: #0f62fe;
-		color: #fff;
-		font-size: 0.95rem;
+		background: var(--primary);
+		color: var(--bg);
+		font-size: 1rem;
 		font-weight: 600;
 		cursor: pointer;
 	}
-
-	.shop-group {
-		padding: 1rem;
-		border: 1px solid #ddd;
-		border-radius: 12px;
-		background: #fff;
-	}
-
 	.item-row {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		gap: 1rem;
-		padding: 0.75rem 0;
-		border-bottom: 1px solid #f0f0f0;
+		padding: 0.5rem 0;
 	}
-
-	.item-row:last-child {
-		border-bottom: none;
-	}
-
 	.item-name {
 		font-weight: 600;
-	}
-
-	.empty-text {
-		color: #777;
-		font-size: 0.95rem;
-		text-align: center;
-		padding: 1rem;
 	}
 </style>

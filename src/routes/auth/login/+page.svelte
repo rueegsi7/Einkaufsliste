@@ -29,58 +29,46 @@
 
 <style>
 	.page-shell {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-		padding: 1rem;
 		max-width: 400px;
 		margin: 2rem auto;
 	}
-
 	.card {
-		padding: 1rem;
-		border: 1px solid #ddd;
+		padding: 2rem;
+		border: 1px solid var(--border);
 		border-radius: 12px;
-		background: #fff;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		background: var(--card-bg);
 	}
-
 	h1 {
-		font-size: 1.25rem;
-		margin-bottom: 1rem;
+		font-size: 1.5rem;
+		margin-bottom: 1.5rem;
+		text-align: center;
 	}
-
 	form {
-		display: flex;
-		flex-direction: column;
+		display: grid;
 		gap: 1rem;
 	}
-
 	label {
-		display: flex;
-		flex-direction: column;
+		display: grid;
 		gap: 0.5rem;
-		font-size: 0.95rem;
 	}
-
 	input {
 		padding: 0.9rem 1rem;
-		border: 1px solid #ccc;
+		border: 1px solid var(--border);
 		border-radius: 10px;
 		font-size: 1rem;
+		background-color: var(--bg);
+		color: var(--text);
 	}
-
 	button {
 		padding: 0.95rem 1rem;
 		border: none;
 		border-radius: 10px;
-		background: #0f62fe;
-		color: #fff;
+		background: var(--primary);
+		color: var(--bg);
 		font-size: 1rem;
 		font-weight: 600;
 		cursor: pointer;
 	}
-
 	.message {
 		padding: 0.8rem 1rem;
 		border-radius: 8px;
@@ -89,7 +77,6 @@
 		color: #2e7d32;
 		border: 1px solid #4caf50;
 	}
-
 	.message.error {
 		background: #ffebee;
 		color: #c62828;

@@ -28,7 +28,7 @@
 				<ul>
 					{#each toBuy as item, index}
 						<li>
-							<button on:click={() => moveToCart(item, index)}>
+							<button onclick={() => moveToCart(item, index)}>
 								{item.name}
 							</button>
 						</li>
@@ -45,7 +45,7 @@
 				<ul>
 					{#each inCart as item, index}
 						<li>
-							<button class="in-cart" on:click={() => moveBackToBuy(item, index)}>
+							<button class="in-cart" onclick={() => moveBackToBuy(item, index)}>
 								{item.name}
 							</button>
 						</li>
@@ -64,14 +64,22 @@
 </div>
 
 <style>
-	.page-shell {
-		padding: 1rem;
-	}
 	.shopping-layout {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 		gap: 2rem;
 		margin: 2rem 0;
+	}
+	@media (min-width: 600px) {
+		.shopping-layout {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	.shopping-list {
+		background: var(--card-bg);
+		padding: 1rem;
+		border-radius: 12px;
+		border: 1px solid var(--border);
 	}
 	.shopping-list ul {
 		list-style: none;
@@ -81,23 +89,25 @@
 		width: 100%;
 		text-align: left;
 		padding: 1rem;
-		border: 1px solid #ddd;
+		border: 1px solid var(--border);
 		border-radius: 8px;
 		margin-bottom: 0.5rem;
-		background: #fff;
+		background: var(--bg);
+		color: var(--text);
 		cursor: pointer;
 		font-size: 1rem;
 	}
 	.shopping-list li button.in-cart {
-		background-color: #e8f5e9;
-		border-color: #4caf50;
+		background-color: #427b58; /* A green from Everforest palette */
+		border-color: #427b58;
+		color: var(--bg);
 	}
 	.finish-button {
 		width: 100%;
 		padding: 1rem;
 		font-size: 1.2rem;
-		background-color: #28a745;
-		color: white;
+		background-color: var(--primary);
+		color: var(--bg);
 		border: none;
 		border-radius: 8px;
 		cursor: pointer;

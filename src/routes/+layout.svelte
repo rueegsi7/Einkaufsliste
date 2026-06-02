@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import '$lib/styles/global.css';
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();
@@ -40,7 +40,8 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 1rem;
-		border-bottom: 1px solid #ddd;
+		border-bottom: 1px solid var(--border);
+		background-color: var(--card-bg);
 	}
 
 	.nav-links {
@@ -51,7 +52,7 @@
 
 	.nav-link {
 		text-decoration: none;
-		color: inherit;
+		color: var(--text);
 		font-weight: 600;
 		background: none;
 		border: none;
@@ -70,7 +71,8 @@
 		width: 32px;
 		height: 32px;
 		border-radius: 50%;
-		background-color: #eee;
+		background-color: var(--primary);
+		color: var(--bg);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -79,5 +81,7 @@
 
 	main {
 		padding: 1rem;
+		max-width: 800px;
+		margin: 0 auto;
 	}
 </style>
