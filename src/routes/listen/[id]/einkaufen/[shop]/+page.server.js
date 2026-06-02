@@ -27,6 +27,12 @@ export async function load({ params, cookies }) {
 			throw redirect(303, '/listen');
 		}
 
+		// Set shopping status
+		await listsCollection.updateOne(
+			{ _id: listObjectId },
+			{ $set: { shoppingStatus: { userId: sessionCookie, shop } } }
+		);
+
 		const items = await itemsCollection
 			.find({ listId: listObjectId, shop: decodeURIComponent(shop), isBought: false })
 			.toArray();
@@ -51,24 +57,24 @@ export const actions = {
 		const itemIds = formData.getAll('itemIds[]');
 		const { id: listId } = params;
 
-		if (!itemIds || itemIds.length === 0) {
-			// Nothing to update, just redirect
-			throw redirect(303, `/listen/${listId}`);
+		if (itemIds && itemIds.length > 0) {
+			try {
+				const itemObjectIds = itemIds.map((id) => new ObjectId(id));
+				const { db } = await connectToDatabase();
+				await db
+					.collection('items')
+					.updateMany({ _id: { $in: itemObjectIds } }, { $set: { isBought: true } });
+			} catch (error) {
+				console.error('Finish shopping error:', error);
+			}
 		}
 
-		try {
-			const itemObjectIds = itemIds.map((id) => new ObjectId(id));
+		// Clear shopping status regardless of whether items were updated
+		const { db } = await connectToDatabase();
+		await db
+			.collection('lists')
+			.updateOne({ _id: new ObjectId(listId) }, { $set: { shoppingStatus: null } });
 
-			const { db } = await connectToDatabase();
-			await db
-				.collection('items')
-				.updateMany({ _id: { $in: itemObjectIds } }, { $set: { isBought: true } });
-
-			throw redirect(303, `/listen/${listId}`);
-		} catch (error) {
-			console.error('Finish shopping error:', error);
-			// Redirect back to the list page even if there's an error
-			throw redirect(303, `/listen/${listId}`);
-		}
+		throw redirect(303, `/listen/${listId}`);
 	}
 };

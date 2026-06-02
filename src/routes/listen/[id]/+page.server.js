@@ -141,6 +141,24 @@ export const actions = {
 		}
 	},
 
+	startShopping: async ({ request, cookies, params }) => {
+		const sessionCookie = cookies.get('session');
+		if (!sessionCookie) return fail(401);
+
+		const formData = await request.formData();
+		const shop = formData.get('shop');
+
+		const { db } = await connectToDatabase();
+		await db
+			.collection('lists')
+			.updateOne(
+				{ _id: new ObjectId(params.id) },
+				{ $set: { shoppingStatus: { userId: sessionCookie, shop } } }
+			);
+
+		throw redirect(303, `/listen/${params.id}/einkaufen/${shop}`);
+	},
+
 	deleteItem: async ({ request, cookies }) => {
 		const sessionCookie = cookies.get('session');
 		if (!sessionCookie) {

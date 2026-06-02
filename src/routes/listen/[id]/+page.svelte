@@ -47,9 +47,10 @@
 				<div class="shop-group">
 					<h3>
 						{shop}
-						<a href={`/listen/${data.listId}/einkaufen/${shop}`} class="start-shopping"
-							>Einkauf starten</a
-						>
+						<form method="POST" action="?/startShopping">
+							<input type="hidden" name="shop" value={shop} />
+							<button type="submit" class="start-shopping">Einkauf starten</button>
+						</form>
 					</h3>
 					{#each items as item}
 						<div class="item-row">

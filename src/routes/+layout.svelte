@@ -3,13 +3,21 @@
 	import { enhance } from '$app/forms';
 
 	let { data } = $props();
+
+	let initials = $derived(
+		(data.user?.firstName?.charAt(0).toUpperCase() ?? '') +
+			(data.user?.lastName?.charAt(0).toUpperCase() ?? '')
+	);
 </script>
 
 <nav>
-	<a href="/" class="brand">LiveSync</a>
+	<a href="/listen" class="nav-link">Listen</a>
 	{#if data.user}
 		<div class="nav-links">
-			<a href="/listen" class="nav-link">Listen</a>
+			<div class="user-info">
+				<div class="avatar">{initials}</div>
+				<span>{data.user.firstName} {data.user.lastName}</span>
+			</div>
 			<form method="POST" action="/auth/logout" use:enhance>
 				<button type="submit" class="nav-link">Logout</button>
 			</form>
@@ -35,12 +43,6 @@
 		border-bottom: 1px solid #ddd;
 	}
 
-	.brand {
-		text-decoration: none;
-		color: inherit;
-		font-weight: 600;
-	}
-
 	.nav-links {
 		display: flex;
 		align-items: center;
@@ -56,6 +58,23 @@
 		cursor: pointer;
 		font-size: 1rem;
 		font-family: inherit;
+	}
+
+	.user-info {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.avatar {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background-color: #eee;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
 	}
 
 	main {
