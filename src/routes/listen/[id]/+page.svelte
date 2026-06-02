@@ -1,5 +1,17 @@
 <script>
 	let { data } = $props();
+
+	let shops = $derived([...new Set(data.items.map((item) => item.shop))]);
+
+	let itemsByShop = $derived(
+		data.items.reduce((acc, item) => {
+			if (!acc[item.shop]) {
+				acc[item.shop] = [];
+			}
+			acc[item.shop].push(item);
+			return acc;
+		}, {})
+	);
 </script>
 
 <div class="page-shell">
@@ -15,7 +27,12 @@
 
 			<label>
 				<span>Laden</span>
-				<input type="text" name="shop" placeholder="z.B. Coop" required />
+				<input type="text" name="shop" list="shops-list" placeholder="z.B. Coop" required />
+				<datalist id="shops-list">
+					{#each shops as shop}
+						<option value={shop}></option>
+					{/each}
+				</datalist>
 			</label>
 
 			<button type="submit">Hinzufügen</button>
@@ -23,57 +40,25 @@
 	</section>
 
 	<section class="items-section">
-		<div class="item-group">
-			<h2>Noch zu besorgen</h2>
-			{#if data.items.filter((item) => !item.isBought).length === 0}
-				<p class="empty-text">Keine Artikel vorhanden.</p>
-			{:else}
-				{#each data.items.filter((item) => !item.isBought) as item}
-					<div class="item-row">
-						<div>
+		{#if Object.keys(itemsByShop).length === 0}
+			<p class="empty-text">Keine Artikel vorhanden.</p>
+		{:else}
+			{#each Object.entries(itemsByShop) as [shop, items]}
+				<div class="shop-group">
+					<h3>
+						{shop}
+						<a href={`/listen/${data.listId}/einkaufen/${shop}`} class="start-shopping"
+							>Einkauf starten</a
+						>
+					</h3>
+					{#each items as item}
+						<div class="item-row">
 							<div class="item-name">{item.name}</div>
-							<div class="item-shop">{item.shop}</div>
 						</div>
-						<div class="item-actions">
-							<form method="POST" action="?/toggleItem">
-								<input type="hidden" name="itemId" value={item.id} />
-								<button type="submit">Abhaken</button>
-							</form>
-							<form method="POST" action="?/deleteItem">
-								<input type="hidden" name="itemId" value={item.id} />
-								<button type="submit" class="delete">Löschen</button>
-							</form>
-						</div>
-					</div>
-				{/each}
-			{/if}
-		</div>
-
-		<div class="item-group">
-			<h2>Im Einkaufswagen</h2>
-			{#if data.items.filter((item) => item.isBought).length === 0}
-				<p class="empty-text">Noch keine Artikel im Einkaufswagen.</p>
-			{:else}
-				{#each data.items.filter((item) => item.isBought) as item}
-					<div class="item-row">
-						<div>
-							<div class="item-name">{item.name}</div>
-							<div class="item-shop">{item.shop}</div>
-						</div>
-						<div class="item-actions">
-							<form method="POST" action="?/toggleItem">
-								<input type="hidden" name="itemId" value={item.id} />
-								<button type="submit">Zurücklegen</button>
-							</form>
-							<form method="POST" action="?/deleteItem">
-								<input type="hidden" name="itemId" value={item.id} />
-								<button type="submit" class="delete">Löschen</button>
-							</form>
-						</div>
-					</div>
-				{/each}
-			{/if}
-		</div>
+					{/each}
+				</div>
+			{/each}
+		{/if}
 	</section>
 </div>
 
@@ -90,20 +75,40 @@
 		margin: 0;
 	}
 
-	.create-section,
-	.items-section {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+	.create-section {
 		padding: 1rem;
 		border: 1px solid #ddd;
 		border-radius: 12px;
 		background: #fff;
 	}
 
+	.items-section {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
 	h2 {
 		font-size: 1.1rem;
 		margin: 0;
+	}
+
+	h3 {
+		font-size: 1rem;
+		margin: 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.5rem;
+	}
+
+	.start-shopping {
+		font-size: 0.8rem;
+		padding: 0.3rem 0.6rem;
+		border-radius: 6px;
+		background: #eee;
+		text-decoration: none;
+		color: #333;
 	}
 
 	form {
@@ -137,28 +142,11 @@
 		cursor: pointer;
 	}
 
-	button.delete {
-		background: #d32f2f;
-	}
-
-	button.delete:hover {
-		background: #b71c1c;
-	}
-
-	button:hover {
-		opacity: 0.95;
-	}
-
-	.items-section {
-		padding: 0;
-	}
-
-	.item-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
+	.shop-group {
 		padding: 1rem;
-		border-bottom: 1px solid #eee;
+		border: 1px solid #ddd;
+		border-radius: 12px;
+		background: #fff;
 	}
 
 	.item-row {
@@ -178,19 +166,10 @@
 		font-weight: 600;
 	}
 
-	.item-shop {
-		font-size: 0.9rem;
-		color: #666;
-	}
-
-	.item-actions {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
 	.empty-text {
 		color: #777;
 		font-size: 0.95rem;
+		text-align: center;
+		padding: 1rem;
 	}
 </style>

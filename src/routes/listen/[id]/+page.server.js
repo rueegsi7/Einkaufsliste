@@ -34,11 +34,13 @@ export async function load({ params, cookies }) {
 		}
 
 		const items = await itemsCollection
-			.find({ listId: listObjectId })
+			.find({ listId: listObjectId, isBought: false })
+			.sort({ createdAt: -1 })
 			.toArray();
 
 		return {
 			listTitle: list.title,
+			listId: list._id.toString(),
 			items: items.map((item) => ({
 				id: item._id.toString(),
 				name: item.name,
