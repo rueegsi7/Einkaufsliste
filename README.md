@@ -94,6 +94,9 @@ Nach den ersten Tests wurden gezielte Anpassungen vorgenommen, um Bedienhürden 
 #### 3.5.1 Meta-Informationen & Methodik
 
 * **URL der getesteten Version:** Prototyp unter [Netlify Link](https://6a01d603edc8da221236cd7a--livesynceinkaufsliste.netlify.app/).
+* **Anmeldeinformationen:** Falls die Registrierung nicht funktioniert, können folgende Anmeldeinformationen genutzt werden:
+    * email: test@test.test
+    * passwort: test
 * **Ziele der Prüfung:** Verstehen Nutzer den Einkaufsmodus? Ist das Hinzufügen intuitiv? Evaluation der Kernfunktionen, Navigation und Alltagstauglichkeit.
 * **Test-Setup:** Durchgeführt am 20.05.2026 (Moderator: Silvan Rüegg). Getestet am Laptop via Nelify-Link.
 * **Aufgaben:**
