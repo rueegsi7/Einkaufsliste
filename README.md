@@ -56,30 +56,51 @@
 * **Daten & Schnittstellen:** MongoDB Atlas (NoSQL) zur persistenten Speicherung von Usern, Listen und Artikeln.
 * **Besondere Entscheidungen:** Verwendung von `bcrypt` für Password-Hashing und HTTP-only Cookies für das Session-Management.
 
+#### 3.4.3. Iterative Improvements (Post-Usability-Test)
+Nach dem ersten Usability-Test wurden umfassende Änderungen vorgenommen, um die identifizierten Probleme zu beheben und die Nutzererfahrung zu verbessern:
+
+* **Authentifizierung & UI:**
+    * Die E-Mail-Bestätigung bei der Registrierung wurde entfernt, um den Prozess zu vereinfachen.
+    * Login und Registrierung wurden auf separate Seiten aufgeteilt.
+    * Die Navigation wurde überarbeitet: Sie zeigt nun den eingeloggten Nutzer mit Initialen und einem Avatar an.
+    * Das "LiveSync"-Branding wurde entfernt.
+* **Listenansicht & Kollaboration:**
+    * **Listenverwaltung:** Nutzer können Listen nun umbenennen und löschen.
+    * **Nutzer einladen:** Eine Funktion zum Einladen anderer Nutzer per E-Mail wurde hinzugefügt.
+    * **Kollaborations-Anzeige:** Avatare (Initialen) der Mitglieder werden auf jeder Liste angezeigt.
+    * **Einkaufs-Status:** Ein Live-Status zeigt an, wenn ein Nutzer gerade aktiv einkauft.
+* **Detailansicht & Einkaufsmodus:**
+    * Die Detailansicht zeigt nur noch Artikel an, die noch nicht gekauft wurden.
+    * Das Dropdown für die Ladenauswahl füllt sich automatisch mit bereits verwendeten Läden.
+    * Auf der Einkaufsseite werden Artikel im Warenkorb grün markiert, um die Übersichtlichkeit zu verbessern.
+* **Technische Anpassungen:**
+    * Umstellung auf Svelte 5 Runes (`$state`, `$derived`) für reaktive Variablen.
+    * Behebung diverser Kompatibilitätsprobleme mit der neuen Svelte-Version.
+
 ### 3.5 Validate
 
 #### 3.5.1 Meta-Informationen & Methodik
 * **URL der getesteten Version:** Aktuell lokal gehostet (localhost:5173) sowie als Prototyp unter [Netlify Link](https://6a01d603edc8da221236cd7a--livesynceinkaufsliste.netlify.app/).
 * **Ziele der Prüfung:** Verstehen Nutzer den Einkaufsmodus? Ist das Hinzufügen intuitiv? Evaluation der Kernfunktionen, Navigation und Alltagstauglichkeit.
 * **Test-Setup:** Durchgeführt am 20.05.2026 (Moderator: Silvan Rüegg). Getestet auf PC/Notebook/Smartphone mittels digital präsentierten Touchgesten.
-* **Aufgaben:** 
+* **Aufgaben:**
 1. Registrieren mit E-Mail-Adresse.
   2. Neue Einkaufsliste erstellen.
   3. Produkt erfassen und als "Eingekauft" markieren.
 
 #### 3.5.2 Wichtigste Erkenntnisse & Next Steps
-Der Mindestumfang (Datenpersistenz und Authentifizierung) ist stabil implementiert. Aus den Usability-Tests ergaben sich jedoch folgende primäre Usability-Probleme und Feature-Wünsche:
+Der Mindestumfang (Datenpersistenz und Authentifizierung) ist stabil implementiert. Aus den Usability-Tests ergaben sich jedoch folgende primäre Usability-Probleme und Feature-Wünsche, die in der anschliessenden Iteration adressiert wurden:
 
 1. **Top 3 Usability-Probleme:**
    * **Registrierungsprozess fehlerhaft/unklar:** Es fehlt eine Systemmeldung, dass eine E-Mail verschickt wird. Bestätigungs-E-Mails kommen teilweise nicht an, und fehlerhafte Eingaben erzeugen keine Warnung.
    * **Unklarheiten beim Abhaken/Einkaufswagen:** Das Konzept des Status (eingekauft oder nicht) ist verwirrend. Man sieht nicht klar, was bereits gekauft wurde.
    * **Auffindbarkeit der Registrierung:** Der Startpunkt für neue Nutzer ist nicht intuitiv platziert.
-2. **Next Steps:**
-   * Benachrichtigungen/Feedback-Meldungen beim Login/Registrierung hinzufügen (z.B. "E-Mail wurde versandt").
-   * Visuelle Überarbeitung der "Abhaken"-Funktion / des Einkaufswagen-Icons für mehr Klarheit.
-   * Fehlende Wunsch-Features prüfen: Mengenangaben, vorgegebene Läden, Verlauf.
-
-#### 3.5.3 Issue Map: livesync Einkaufsliste
+2. **Next Steps (erledigt):**
+   * **Benachrichtigungen/Feedback-Meldungen:** Klare Statusmeldungen bei Login und Registrierung wurden implementiert.
+   * **Einkaufsmodus:** Der "Einkaufswagen" wurde in eine separate Seite ausgelagert, um die Übersichtlichkeit zu erhöhen.
+   * **Vereinfachte Registrierung:** Der Prozess wurde durch die Entfernung der E-Mail-Verifizierung vereinfacht.
+   * **Kollaborative Funktionen:** Hinzufügen von Mitgliedern, Löschen und Umbenennen von Listen wurde umgesetzt.
+   * **Fehlende Wunsch-Features:** Mengenangaben und ein Einkaufsverlauf sind noch offen.
 
 | **ID** | **Bereich** | **Problembeschreibung** | **Schweregrad** | **Lösungsansatz / Next Step** |
 | :--- | :--- | :--- | :--- | :--- |
@@ -88,7 +109,7 @@ Der Mindestumfang (Datenpersistenz und Authentifizierung) ist stabil implementie
 | **03** | Registrierung | **Unklarer Einstieg:** Die Funktion, um sich neu zu registrieren, wird nicht sofort gefunden. | Mittel | Platzierung und visuelle Gewichtung des Links überarbeiten. |
 | **04** | Registrierung | **Fehlende Validierung:** Eine falsch formatierte E-Mail-Adresse löst keine Warnung aus. | Mittel | Live-Validierung des Eingabefelds hinzufügen. |
 | **05** | Einkaufsliste | **Konzeptionelle Unklarheit:** Das Konzept des "Abhakens" (Einkaufswagen-Icon) wird nicht verstanden. | Hoch | Visuelles Feedback anpassen (z.B. durchstreichen, ausgrauen oder separater Bereich). |
-| **06** | Übersicht | **Fehlende Informationen:** In der allgemeinen Listenübersicht werden die Artikel nicht angezeigt. | Mittel | Preview-Funktion auf der Übersichtskarte einbauen. |
+| **06** | Übersicht | **Fehlende Informationen:** In der allgemeinen Listenübersicht fehlt die Anzahl der offenen Artikel. | Mittel | Anzahl der noch nicht gekauften Artikel auf der Übersichtskarte anzeigen. |
 | **07** | Feature | **Mengen & Links:** Es fehlen Möglichkeiten, genaue Mengen anzugeben oder Links für Onlinekäufe zu hinterlegen. | Niedrig | Datenmodell für Artikel erweitern. |
 | **08** | Feature | **Läden vorgeben:** Nutzer wünschen sich eine Möglichkeit, Artikel bestimmten Läden zuzuordnen. | Niedrig | Kategorie- oder Tagging-System implementieren. |
 | **09** | Feature | **Einkaufsverlauf:** Es gibt keine Historie über vergangene Einkäufe. | Niedrig | Eigenen Reiter "Verlauf" oder "Kürzlich gekauft" einführen. |
